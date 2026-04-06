@@ -1,5 +1,5 @@
 /**
- * Hephaestus Type Definitions
+ * hephaestus Type Definitions
  */
 
 export type AIBackend = 'copilot' | 'openai' | 'claude' | 'ollama';

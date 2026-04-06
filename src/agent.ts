@@ -1,5 +1,5 @@
 /**
- * Hephaestus - 24/7 Autonomous AI Developer Agent
+ * hephaestus - 24/7 Autonomous AI Developer Agent
  * Main entry point
  */
 
@@ -18,7 +18,7 @@ const runOnce = process.argv.includes('--once');
 
 async function main(): Promise<void> {
   logger.info('='.repeat(50));
-  logger.info('Hephaestus v1.0.0 - Starting up...');
+  logger.info('hephaestus v1.0.0 - Starting up...');
   logger.info('='.repeat(50));
 
   // Initialize components
@@ -258,7 +258,7 @@ async function main(): Promise<void> {
   }, 5 * 60 * 1000); // 5 minutes
 
   logger.info('='.repeat(50));
-  logger.info('Hephaestus is running and watching TASKS.md');
+  logger.info('hephaestus is running and watching TASKS.md');
   logger.info('Add tasks to TASKS.md to start working');
   logger.info('Press Ctrl+C to stop');
   logger.info('='.repeat(50));

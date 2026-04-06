@@ -1,5 +1,5 @@
 /**
- * Hephaestus AI Executor
+ * hephaestus AI Executor
  * Handles communication with various AI backends
  */
 
@@ -254,7 +254,7 @@ export class AIExecutor {
    * Get system prompt for the AI
    */
   private getSystemPrompt(): string {
-    return `You are Hephaestus, an autonomous AI developer agent. Your role is to:
+    return `You are hephaestus, an autonomous AI developer agent. Your role is to:
 1. Implement tasks from the task queue
 2. Write clean, maintainable code
 3. Follow project conventions

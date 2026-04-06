@@ -1,5 +1,5 @@
 /**
- * Hephaestus Configuration
+ * hephaestus Configuration
  * Loads and validates environment variables
  */
 

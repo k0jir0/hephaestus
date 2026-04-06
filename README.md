@@ -1,8 +1,8 @@
-# Hephaestus
+# hephaestus
 
-Hephaestus is a self-targeting AI automation demo. It watches a Markdown task queue, gathers repository context, sends work to a configurable AI backend, and records state transitions in markdown so the workflow stays inspectable.
+hephaestus is a self-targeting AI automation demo. It watches a Markdown task queue, gathers repository context, sends work to a configurable AI backend, and records state transitions in markdown so the workflow stays inspectable.
 
-This repository is configured to run Hephaestus on itself by default. That makes it useful as a GitHub-ready demo of AI automation with visible guardrails instead of an opaque “magic agent” claim.
+This repository is configured to run hephaestus on itself by default. That makes it useful as a GitHub-ready demo of AI automation with visible guardrails instead of an opaque “magic agent” claim.
 
 ## What It Demonstrates
 
@@ -15,7 +15,7 @@ This repository is configured to run Hephaestus on itself by default. That makes
 
 ## Current Scope
 
-Hephaestus is intentionally a safe demo project. It orchestrates tasks and records AI output, but it does not yet apply code edits through a sandboxed tool runtime. That makes the automation flow auditable while keeping the implementation small enough to understand.
+hephaestus is intentionally a safe demo project. It orchestrates tasks and records AI output, but it does not yet apply code edits through a sandboxed tool runtime. That makes the automation flow auditable while keeping the implementation small enough to understand.
 
 ## Quick Start
 
@@ -43,7 +43,7 @@ The default `.env.example` targets the current repository:
 TARGET_PROJECT=.
 ```
 
-That means the agent reads and reasons about the Hephaestus repo itself. To point it at another project, set `TARGET_PROJECT` to a different path.
+That means the agent reads and reasons about the hephaestus repo itself. To point it at another project, set `TARGET_PROJECT` to a different path.
 
 ## Scripts
 
@@ -56,7 +56,7 @@ That means the agent reads and reasons about the Hephaestus repo itself. To poin
 
 ## Task Lifecycle
 
-Hephaestus uses a section-based task file:
+hephaestus uses a section-based task file:
 
 ```text
 Queue -> In Progress -> Completed

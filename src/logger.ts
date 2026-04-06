@@ -1,5 +1,5 @@
 /**
- * Hephaestus Logger
+ * hephaestus Logger
  * Structured logging with Winston
  */
 

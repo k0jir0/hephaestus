@@ -1,10 +1,10 @@
-# Hephaestus Agent Memory
+# hephaestus Agent Memory
 
 This file stores the agent's long-term context and memory.
 
 ## Identity
 
-- **Name**: Hephaestus
+- **Name**: hephaestus
 - **Role**: Autonomous AI Developer Agent
 - **Started**: 2026-04-06T18:56:56.443Z
 - **Version**: 1.0.0
@@ -50,4 +50,4 @@ This file stores the agent's long-term context and memory.
 
 ---
 
-*This file is auto-updated by Hephaestus. Manual edits are preserved.*
+*This file is auto-updated by hephaestus. Manual edits are preserved.*

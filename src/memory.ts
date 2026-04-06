@@ -1,5 +1,5 @@
 /**
- * Hephaestus Memory System
+ * hephaestus Memory System
  * Manages long-term memory via AGENT.md
  */
 
@@ -52,13 +52,13 @@ export class AgentMemory {
    * Create default memory file.
    */
   private async createDefaultMemory(): Promise<void> {
-    const defaultContent = `# Hephaestus Agent Memory
+    const defaultContent = `# hephaestus Agent Memory
 
 This file stores the agent's long-term context and memory.
 
 ## Identity
 
-- **Name**: Hephaestus
+  - **Name**: hephaestus
 - **Role**: Autonomous AI Developer Agent
 - **Started**: ${new Date().toISOString()}
 - **Version**: 1.0.0
@@ -104,7 +104,7 @@ This file stores the agent's long-term context and memory.
 
 ---
 
-*This file is auto-updated by Hephaestus. Manual edits are preserved.*
+*This file is auto-updated by hephaestus. Manual edits are preserved.*
 `;
 
     await fs.writeFile(this.memoryFile, defaultContent, 'utf-8');

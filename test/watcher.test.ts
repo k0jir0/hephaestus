@@ -42,7 +42,7 @@ afterEach(async () => {
 describe('TaskWatcher', () => {
   it('parses only queue tasks and strips legacy in-progress markers', () => {
     const watcher = new TaskWatcher();
-    const content = `# Hephaestus Task Queue
+    const content = `# hephaestus Task Queue
 
 ## Queue
 
@@ -67,7 +67,7 @@ describe('TaskWatcher', () => {
   });
 
   it('moves queue tasks into the in-progress section', async () => {
-    config.tasksFile = await createTempTasksFile(`# Hephaestus Task Queue
+    config.tasksFile = await createTempTasksFile(`# hephaestus Task Queue
 
 ## Queue
 
@@ -95,7 +95,7 @@ describe('TaskWatcher', () => {
   });
 
   it('moves in-progress tasks into completed', async () => {
-    config.tasksFile = await createTempTasksFile(`# Hephaestus Task Queue
+    config.tasksFile = await createTempTasksFile(`# hephaestus Task Queue
 
 ## Queue
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hephaestus Startup Script
+# hephaestus Startup Script
 # Starts the agent in a tmux session for 24/7 operation
 
 set -e
@@ -8,12 +8,12 @@ SESSION_NAME="hephaestus"
 AGENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="$AGENT_DIR/hephaestus.log"
 
-echo "Starting Hephaestus..."
+echo "Starting hephaestus..."
 echo "Log file: $LOG_FILE"
 
 # Check if already running
 if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-    echo "Hephaestus is already running in tmux session '$SESSION_NAME'"
+    echo "hephaestus is already running in tmux session '$SESSION_NAME'"
     echo "Attach with: tmux attach -t $SESSION_NAME"
     exit 0
 fi
@@ -34,7 +34,7 @@ fi
 # Create new tmux session and start the agent
 tmux new-session -d -s "$SESSION_NAME" "cd '$AGENT_DIR' && npm run start:daemon 2>&1 | tee '$LOG_FILE'"
 
-echo "Hephaestus started in tmux session '$SESSION_NAME'"
+echo "hephaestus started in tmux session '$SESSION_NAME'"
 echo ""
 echo "Commands:"
 echo "  View logs:   tail -f $LOG_FILE"
