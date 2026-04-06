@@ -6,16 +6,17 @@
 import fs from 'fs/promises';
 import { config } from './config.js';
 import { createComponentLogger } from './logger.js';
+import type { MemoryRepository } from './repositories.js';
 import type { MemoryEntry, Task } from './types.js';
 
 const logger = createComponentLogger('Memory');
 
-export class AgentMemory {
+export class AgentMemory implements MemoryRepository {
   private memoryFile: string;
   private entries: MemoryEntry[] = [];
 
-  constructor() {
-    this.memoryFile = config.agentMemoryFile;
+  constructor(memoryFile: string = config.agentMemoryFile) {
+    this.memoryFile = memoryFile;
     logger.info('AgentMemory initialized');
   }
 
@@ -434,3 +435,5 @@ This file stores the agent's long-term context and memory.
     return [...trimmed, ''];
   }
 }
+
+export type MarkdownMemoryRepository = AgentMemory;

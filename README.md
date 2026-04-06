@@ -7,6 +7,9 @@ This repository is configured to run hephaestus on itself by default. That makes
 ## What It Demonstrates
 
 - Queue-driven automation through `TASKS.md`
+- Startup preflight and policy-first task admission before queue mutation
+- Structured planning contracts with intended files, commands, verification, and risks
+- Markdown repository adapters with bounded fixture smoke coverage
 - Repository context gathering from `package.json`, `README.md`, and git status
 - Pluggable AI backends for GitHub Copilot CLI, OpenAI, Claude, and Ollama
 - Guardrails for budget, iteration count, error thresholds, and optional auto-commit
@@ -15,7 +18,7 @@ This repository is configured to run hephaestus on itself by default. That makes
 
 ## Current Scope
 
-hephaestus is intentionally a safe demo project. It orchestrates tasks and records AI output, but it does not yet apply code edits through a sandboxed tool runtime. That makes the automation flow auditable while keeping the implementation small enough to understand.
+hephaestus is intentionally a safe demo project. It orchestrates tasks and records typed execution plans, but it does not yet apply code edits through a sandboxed tool runtime. That keeps the automation flow auditable while still exposing the plan the agent intends to follow.
 
 ## Quick Start
 
@@ -25,6 +28,9 @@ npm install
 
 # Configure environment
 cp .env.example .env
+
+# Validate the environment and repo shape
+npm run preflight
 
 # Run one bounded demo pass
 npm run start:once
@@ -48,11 +54,12 @@ That means the agent reads and reasons about the hephaestus repo itself. To poin
 ## Scripts
 
 - `npm run build` compiles the TypeScript source into `dist/`
+- `npm run preflight` validates config, repo files, and backend reachability
 - `npm run start` builds and starts watcher mode
 - `npm run start:once` builds, processes the current queue once, and exits
 - `npm run dev` runs the agent directly from source with `tsx`
 - `npm run dev:once` runs a single-pass source-mode demo
-- `npm test` runs the watcher and memory tests
+- `npm test` runs contract, repository, runtime, and smoke tests
 
 ## Task Lifecycle
 
@@ -64,6 +71,21 @@ Queue -> In Progress -> Completed
 
 Pending work belongs in the `Queue` section of `TASKS.md`. As work starts, the task moves into `In Progress`. When a task succeeds, it moves into `Completed`.
 
+Before a task leaves `Queue`, hephaestus now runs an admission gate that checks policy and runtime readiness first. If admission fails, the task stays queued and the blocker is recorded in `AGENT.md`.
+
+When a task is admitted, the executor now returns a structured plan instead of only free-form prose. Each successful plan contains:
+
+- intended file targets
+- intended commands
+- verification steps
+- risk notes
+
+The runtime now talks to explicit task and memory repository interfaces. The built-in implementations remain markdown-backed so the workflow stays inspectable, but the orchestration layer no longer depends directly on markdown file logic.
+
+## Architecture
+
+See `docs/architecture.md` for the current runtime shape and the shift-left roadmap.
+
 ## Project Structure
 
 ```text
@@ -74,9 +96,15 @@ hephaestus/
 │   ├── executor.ts
 │   ├── logger.ts
 │   ├── memory.ts
+│   ├── plan-contract.ts
+│   ├── preflight.ts
+│   ├── repositories.ts
+│   ├── runtime.ts
 │   ├── safety.ts
 │   ├── types.ts
 │   └── watcher.ts
+├── docs/
+│   └── architecture.md
 ├── test/
 ├── TASKS.md
 ├── AGENT.md

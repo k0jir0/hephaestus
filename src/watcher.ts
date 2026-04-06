@@ -7,6 +7,7 @@ import chokidar from 'chokidar';
 import fs from 'fs/promises';
 import { config } from './config.js';
 import { createComponentLogger } from './logger.js';
+import type { TaskRepository } from './repositories.js';
 import type { Task } from './types.js';
 
 const logger = createComponentLogger('Watcher');
@@ -14,12 +15,14 @@ const EMPTY_SECTION_ITEM = '- (empty)';
 
 type TaskSection = 'Queue' | 'In Progress' | 'Completed' | 'Cancelled';
 
-export class TaskWatcher {
+export class TaskWatcher implements TaskRepository {
   private watcher: chokidar.FSWatcher | null = null;
   private knownPendingTaskIds = new Set<string>();
   private onNewTask: ((task: Task) => Promise<void>) | null = null;
+  private readonly tasksFile: string;
 
-  constructor() {
+  constructor(tasksFile: string = config.tasksFile) {
+    this.tasksFile = tasksFile;
     logger.info('TaskWatcher initialized');
   }
 
@@ -31,11 +34,11 @@ export class TaskWatcher {
       await callback(task);
     };
 
-    logger.info(`Starting watcher on ${config.tasksFile}`);
+    logger.info(`Starting watcher on ${this.tasksFile}`);
 
     await this.checkForTasks();
 
-    this.watcher = chokidar.watch(config.tasksFile, {
+    this.watcher = chokidar.watch(this.tasksFile, {
       persistent: true,
       ignoreInitial: true,
       awaitWriteFinish: {
@@ -71,7 +74,7 @@ export class TaskWatcher {
    * Read the queue and return pending tasks in order.
    */
   async getPendingTasks(): Promise<Task[]> {
-    const content = await fs.readFile(config.tasksFile, 'utf-8');
+    const content = await fs.readFile(this.tasksFile, 'utf-8');
     return this.parseTasks(content).filter((task) => task.status === 'pending');
   }
 
@@ -153,7 +156,7 @@ export class TaskWatcher {
    */
   async markTaskInProgress(task: Task): Promise<void> {
     try {
-      const content = await fs.readFile(config.tasksFile, 'utf-8');
+      const content = await fs.readFile(this.tasksFile, 'utf-8');
       const updatedContent = this.moveTaskBetweenSections(
         content,
         task.description,
@@ -163,7 +166,7 @@ export class TaskWatcher {
       );
 
       if (updatedContent !== content) {
-        await fs.writeFile(config.tasksFile, updatedContent, 'utf-8');
+        await fs.writeFile(this.tasksFile, updatedContent, 'utf-8');
         logger.debug(`Marked task as in progress: ${task.description}`);
       }
     } catch (error) {
@@ -176,7 +179,7 @@ export class TaskWatcher {
    */
   async markTaskCompleted(task: Task): Promise<void> {
     try {
-      const content = await fs.readFile(config.tasksFile, 'utf-8');
+      const content = await fs.readFile(this.tasksFile, 'utf-8');
       let updatedContent = this.moveTaskBetweenSections(
         content,
         task.description,
@@ -196,7 +199,7 @@ export class TaskWatcher {
       }
 
       if (updatedContent !== content) {
-        await fs.writeFile(config.tasksFile, updatedContent, 'utf-8');
+        await fs.writeFile(this.tasksFile, updatedContent, 'utf-8');
         logger.debug(`Marked task as completed: ${task.description}`);
       }
     } catch (error) {
@@ -341,3 +344,5 @@ export class TaskWatcher {
     }
   }
 }
+
+export type MarkdownTaskRepository = TaskWatcher;

@@ -6,6 +6,10 @@ export type AIBackend = 'copilot' | 'openai' | 'claude' | 'ollama';
 
 export type TaskStatus = 'pending' | 'in_progress' | 'completed' | 'blocked';
 
+export type AgentStatus = 'idle' | 'working' | 'error' | 'shutdown' | 'blocked';
+
+export type PlannedFileChangeType = 'create' | 'update' | 'delete' | 'inspect';
+
 export interface Task {
   id: string;
   description: string;
@@ -18,7 +22,7 @@ export interface Task {
 }
 
 export interface AgentState {
-  status: 'idle' | 'working' | 'error' | 'shutdown';
+  status: AgentStatus;
   currentTask?: Task;
   iterationCount: number;
   totalTasksCompleted: number;
@@ -39,9 +43,31 @@ export interface SafetyConfig {
   autoCommitInterval: number;
 }
 
+export interface PlannedFileChange {
+  path: string;
+  changeType: PlannedFileChangeType;
+  purpose: string;
+}
+
+export interface PlannedCommand {
+  command: string;
+  purpose: string;
+  expectedOutcome?: string;
+}
+
+export interface TaskPlan {
+  summary: string;
+  intendedFiles: PlannedFileChange[];
+  commands: PlannedCommand[];
+  verification: string[];
+  risks: string[];
+}
+
 export interface AIResponse {
   success: boolean;
   content: string;
+  rawContent?: string;
+  plan?: TaskPlan;
   toolCalls?: ToolCall[];
   cost?: number;
   tokens?: {

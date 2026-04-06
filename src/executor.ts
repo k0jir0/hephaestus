@@ -3,13 +3,18 @@
  * Handles communication with various AI backends
  */
 
-import { exec } from 'child_process';
+import { execFile } from 'child_process';
 import { promisify } from 'util';
 import { config } from './config.js';
 import { createComponentLogger } from './logger.js';
+import {
+  buildStructuredPlanPrompt,
+  getStructuredPlanSystemPrompt,
+  parseTaskPlan,
+} from './plan-contract.js';
 import type { AIResponse, Task } from './types.js';
 
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 const logger = createComponentLogger('Executor');
 
 export class AIExecutor {
@@ -26,6 +31,34 @@ export class AIExecutor {
   async executeTask(task: Task, context?: string): Promise<AIResponse> {
     logger.info(`Executing task: ${task.description}`);
 
+    const response = await this.requestStructuredPlan(task, context);
+    if (!response.success) {
+      return response;
+    }
+
+    try {
+      const plan = parseTaskPlan(response.content);
+
+      return {
+        ...response,
+        content: plan.summary,
+        rawContent: response.content,
+        plan,
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      logger.error('Structured plan validation failed', { error: errorMessage });
+
+      return {
+        ...response,
+        success: false,
+        rawContent: response.content,
+        content: `Structured plan validation failed: ${errorMessage}`,
+      };
+    }
+  }
+
+  private async requestStructuredPlan(task: Task, context?: string): Promise<AIResponse> {
     switch (this.backend) {
       case 'copilot':
         return this.executeWithCopilot(task, context);
@@ -48,9 +81,8 @@ export class AIExecutor {
    */
   private async executeWithCopilot(task: Task, context?: string): Promise<AIResponse> {
     try {
-      // Check if gh copilot is available
       try {
-        await execAsync('gh copilot --version');
+        await execFileAsync('gh', ['copilot', '--version']);
       } catch {
         return {
           success: false,
@@ -61,13 +93,13 @@ export class AIExecutor {
       const targetPath = config.targetProject;
       const prompt = this.buildPrompt(task, context);
 
-      // Run copilot with the task
-      const { stdout, stderr } = await execAsync(
-        `gh copilot suggest -t implement "${prompt}"`,
+      const { stdout, stderr } = await execFileAsync(
+        'gh',
+        ['copilot', 'suggest', '-t', 'implement', prompt],
         {
           cwd: targetPath,
-          timeout: 300000, // 5 minute timeout
-          maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+          timeout: 300000,
+          maxBuffer: 10 * 1024 * 1024,
         }
       );
 
@@ -120,7 +152,7 @@ export class AIExecutor {
           },
         ],
         max_tokens: 4000,
-        temperature: 0.7,
+        temperature: 0.2,
       });
 
       const content = response.choices[0]?.message?.content || '';
@@ -209,7 +241,7 @@ export class AIExecutor {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model,
-          prompt,
+          prompt: `${this.getSystemPrompt()}\n\n${prompt}`,
           stream: false,
         }),
       });
@@ -238,36 +270,14 @@ export class AIExecutor {
    * Build the prompt for a task
    */
   private buildPrompt(task: Task, context?: string): string {
-    let prompt = task.description;
-
-    if (context) {
-      prompt += `\n\nContext:\n${context}`;
-    }
-
-    prompt += `\n\nProject path: ${config.targetProject}`;
-    prompt += '\n\nPlease implement this task. If code changes are needed, provide them clearly.';
-
-    return prompt;
+    return buildStructuredPlanPrompt(task, context, config.targetProject);
   }
 
   /**
    * Get system prompt for the AI
    */
   private getSystemPrompt(): string {
-    return `You are hephaestus, an autonomous AI developer agent. Your role is to:
-1. Implement tasks from the task queue
-2. Write clean, maintainable code
-3. Follow project conventions
-4. Run tests when applicable
-5. Report progress and any blockers
-
-When implementing tasks:
-- Break down complex tasks into smaller steps
-- Write tests before implementation when possible (TDD)
-- Commit changes frequently
-- Document your work in code comments
-
-Always provide clear output about what you did and any issues encountered.`;
+    return getStructuredPlanSystemPrompt();
   }
 
   /**
@@ -308,7 +318,7 @@ Always provide clear output about what you did and any issues encountered.`;
     switch (this.backend) {
       case 'copilot':
         try {
-          await execAsync('gh copilot --version');
+          await execFileAsync('gh', ['copilot', '--version']);
           return { available: true, message: 'GitHub Copilot CLI is available' };
         } catch {
           return { available: false, message: 'GitHub Copilot CLI is not installed or not authenticated' };

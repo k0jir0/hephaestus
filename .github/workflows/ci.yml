@@ -24,5 +24,8 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Run preflight
+        run: npm run preflight
+
       - name: Run tests
         run: npm test

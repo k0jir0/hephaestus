@@ -8,6 +8,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import type { AIBackend, SafetyConfig } from './types.js';
 
+export interface ConfigValidationIssue {
+  code: string;
+  message: string;
+}
+
+export const supportedAIBackends = ['copilot', 'openai', 'claude', 'ollama'] as const;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -39,6 +46,10 @@ export interface Config {
   openaiApiKey?: string;
   anthropicApiKey?: string;
   ollamaBaseUrl?: string;
+}
+
+function isSupportedAIBackend(value: string): value is AIBackend {
+  return supportedAIBackends.includes(value as AIBackend);
 }
 
 function getEnv(key: string, defaultValue?: string): string {
@@ -95,6 +106,70 @@ export function loadConfig(): Config {
     anthropicApiKey: getEnv('ANTHROPIC_API_KEY'),
     ollamaBaseUrl: getEnv('OLLAMA_BASE_URL', 'http://localhost:11434'),
   };
+}
+
+export function validateConfig(candidate: Config): ConfigValidationIssue[] {
+  const issues: ConfigValidationIssue[] = [];
+
+  if (!isSupportedAIBackend(String(candidate.aiBackend))) {
+    issues.push({
+      code: 'invalid-ai-backend',
+      message: `AI_BACKEND must be one of: ${supportedAIBackends.join(', ')}`,
+    });
+  }
+
+  if (!candidate.targetProject.trim()) {
+    issues.push({
+      code: 'missing-target-project',
+      message: 'TARGET_PROJECT must resolve to a non-empty path.',
+    });
+  }
+
+  if (!Number.isFinite(candidate.checkInterval) || candidate.checkInterval <= 0) {
+    issues.push({
+      code: 'invalid-check-interval',
+      message: 'CHECK_INTERVAL must be a positive number of milliseconds.',
+    });
+  }
+
+  if (!Number.isFinite(candidate.safety.dailyTokenBudget) || candidate.safety.dailyTokenBudget < 0) {
+    issues.push({
+      code: 'invalid-daily-budget',
+      message: 'DAILY_TOKEN_BUDGET must be a finite number greater than or equal to 0.',
+    });
+  }
+
+  if (
+    !Number.isInteger(candidate.safety.maxIterations) ||
+    candidate.safety.maxIterations <= 0
+  ) {
+    issues.push({
+      code: 'invalid-max-iterations',
+      message: 'MAX_ITERATIONS must be a positive integer.',
+    });
+  }
+
+  if (
+    !Number.isInteger(candidate.safety.errorThreshold) ||
+    candidate.safety.errorThreshold <= 0
+  ) {
+    issues.push({
+      code: 'invalid-error-threshold',
+      message: 'ERROR_THRESHOLD must be a positive integer.',
+    });
+  }
+
+  if (
+    !Number.isFinite(candidate.safety.autoCommitInterval) ||
+    candidate.safety.autoCommitInterval < 0
+  ) {
+    issues.push({
+      code: 'invalid-auto-commit-interval',
+      message: 'AUTO_COMMIT_INTERVAL must be a finite number greater than or equal to 0.',
+    });
+  }
+
+  return issues;
 }
 
 export const config = loadConfig();

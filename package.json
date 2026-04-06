@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "preflight": "tsx src/agent.ts --preflight",
     "start": "npm run build && node dist/agent.js",
     "start:daemon": "npm run build && node dist/agent.js --daemon",
     "start:once": "npm run build && node dist/agent.js --once",
