@@ -1,0 +1,42 @@
+{
+  "name": "hephaestus",
+  "version": "1.0.0",
+  "description": "24/7 Autonomous AI Developer Agent",
+  "main": "dist/agent.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/agent.js",
+    "start:daemon": "npm run build && node dist/agent.js --daemon",
+    "watch": "tsc --watch",
+    "dev": "tsx src/agent.ts",
+    "lint": "eslint src/**/*.ts",
+    "test": "echo \"No tests configured\""
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "autonomous",
+    "developer",
+    "copilot",
+    "24/7"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "gray-matter": "^4.0.3",
+    "openai": "^4.52.7",
+    "@anthropic-ai/sdk": "^0.39.0",
+    "winston": "^3.14.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
