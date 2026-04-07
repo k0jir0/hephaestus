@@ -1,5 +1,5 @@
 @echo off
-REM hephaestus Startup Script (Windows)
+REM Hephaestus Startup Script (Windows)
 REM Starts the agent as a background process for 24/7 operation
 
 setlocal
@@ -7,7 +7,7 @@ setlocal
 set "AGENT_DIR=%~dp0"
 set "LOG_FILE=%AGENT_DIR%hephaestus.log"
 
-echo Starting hephaestus...
+echo Starting Hephaestus...
 echo Log file: %LOG_FILE%
 
 REM Check for Node.js
@@ -28,7 +28,7 @@ REM Start the agent in background
 cd /d "%AGENT_DIR%"
 start /b cmd /c "npm run start:daemon > \"%LOG_FILE%\" 2>&1"
 
-echo hephaestus started
+echo Hephaestus started
 echo.
 echo Commands:
 echo   View logs:   type %LOG_FILE%

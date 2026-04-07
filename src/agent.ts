@@ -1,5 +1,5 @@
 /**
- * hephaestus - 24/7 Autonomous AI Developer Agent
+ * Hephaestus - 24/7 Autonomous AI Developer Agent
  * Main entry point
  */
 
@@ -12,7 +12,7 @@ const runtime = new HephaestusRuntime();
 
 async function main(): Promise<void> {
   logger.info('='.repeat(50));
-  logger.info('hephaestus v1.0.0 - Starting up...');
+  logger.info('Hephaestus v1.0.0 - Starting up...');
   logger.info('='.repeat(50));
 
   await runtime.run({ runOnce, preflightOnly });

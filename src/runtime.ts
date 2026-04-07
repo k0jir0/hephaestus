@@ -234,7 +234,7 @@ export class HephaestusRuntime {
     }, config.checkInterval);
 
     logger.info('='.repeat(50));
-    logger.info('hephaestus is running and watching TASKS.md');
+    logger.info('Hephaestus is running and watching TASKS.md');
     logger.info('Add tasks to TASKS.md to start working');
     logger.info('Press Ctrl+C to stop');
     logger.info('='.repeat(50));

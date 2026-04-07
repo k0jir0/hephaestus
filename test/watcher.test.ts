@@ -11,7 +11,7 @@ const originalTasksFile = config.tasksFile;
 const tempDirs: string[] = [];
 
 async function createTempTasksFile(content: string): Promise<string> {
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'hephaestus-watcher-'));
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'Hephaestus-watcher-'));
   tempDirs.push(tempDir);
 
   const tasksFile = path.join(tempDir, 'TASKS.md');
@@ -42,7 +42,7 @@ afterEach(async () => {
 describe('TaskWatcher', () => {
   it('parses only queue tasks and strips legacy in-progress markers', () => {
     const watcher = new TaskWatcher();
-    const content = `# hephaestus Task Queue
+    const content = `# Hephaestus Task Queue
 
 ## Queue
 
@@ -67,7 +67,7 @@ describe('TaskWatcher', () => {
   });
 
   it('moves queue tasks into the in-progress section', async () => {
-    config.tasksFile = await createTempTasksFile(`# hephaestus Task Queue
+    config.tasksFile = await createTempTasksFile(`# Hephaestus Task Queue
 
 ## Queue
 
@@ -95,7 +95,7 @@ describe('TaskWatcher', () => {
   });
 
   it('moves in-progress tasks into completed', async () => {
-    config.tasksFile = await createTempTasksFile(`# hephaestus Task Queue
+    config.tasksFile = await createTempTasksFile(`# Hephaestus Task Queue
 
 ## Queue
 

@@ -1,8 +1,8 @@
-# hephaestus
+# Hephaestus
 
 Hephaestus is a self-targeting AI automation demo. It watches a Markdown task queue, gathers repository context, sends work to a configurable AI backend, and records state transitions in markdown so the workflow stays inspectable.
 
-This repository is configured to run hephaestus on itself by default. That makes it useful as a GitHub-ready demo of AI automation with visible guardrails instead of an opaque “magic agent” claim.
+This repository is configured to run Hephaestus on itself by default. That makes it useful as a GitHub-ready demo of AI automation with visible guardrails instead of an opaque “magic agent” claim.
 
 ## What It Demonstrates
 
@@ -18,7 +18,7 @@ This repository is configured to run hephaestus on itself by default. That makes
 
 ## Current Scope
 
-hephaestus is intentionally a safe demo project. It orchestrates tasks and records typed execution plans, but it does not yet apply code edits through a sandboxed tool runtime. That keeps the automation flow auditable while still exposing the plan the agent intends to follow.
+Hephaestus is intentionally a safe demo project. It orchestrates tasks and records typed execution plans, but it does not yet apply code edits through a sandboxed tool runtime. That keeps the automation flow auditable while still exposing the plan the agent intends to follow.
 
 ## Quick Start
 
@@ -49,7 +49,7 @@ The default `.env.example` targets the current repository:
 TARGET_PROJECT=.
 ```
 
-That means the agent reads and reasons about the hephaestus repo itself. To point it at another project, set `TARGET_PROJECT` to a different path.
+That means the agent reads and reasons about this repository itself. To point it at another project, set `TARGET_PROJECT` to a different path.
 
 ## Scripts
 
@@ -63,7 +63,7 @@ That means the agent reads and reasons about the hephaestus repo itself. To poin
 
 ## Task Lifecycle
 
-hephaestus uses a section-based task file:
+Hephaestus uses a section-based task file:
 
 ```text
 Queue -> In Progress -> Completed
@@ -71,7 +71,7 @@ Queue -> In Progress -> Completed
 
 Pending work belongs in the `Queue` section of `TASKS.md`. As work starts, the task moves into `In Progress`. When a task succeeds, it moves into `Completed`.
 
-Before a task leaves `Queue`, hephaestus now runs an admission gate that checks policy and runtime readiness first. If admission fails, the task stays queued and the blocker is recorded in `AGENT.md`.
+Before a task leaves `Queue`, Hephaestus now runs an admission gate that checks policy and runtime readiness first. If admission fails, the task stays queued and the blocker is recorded in `AGENT.md`.
 
 When a task is admitted, the executor now returns a structured plan instead of only free-form prose. Each successful plan contains:
 
@@ -89,7 +89,7 @@ See `docs/architecture.md` for the current runtime shape and the shift-left road
 ## Project Structure
 
 ```text
-hephaestus/
+Hephaestus/
 ├── src/
 │   ├── agent.ts
 │   ├── config.ts

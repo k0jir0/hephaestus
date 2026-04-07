@@ -11,7 +11,7 @@ const originalMemoryFile = config.agentMemoryFile;
 const tempDirs: string[] = [];
 
 async function createTempMemoryFile(initialContent: string): Promise<string> {
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'hephaestus-memory-'));
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'Hephaestus-memory-'));
   tempDirs.push(tempDir);
 
   const memoryFile = path.join(tempDir, 'AGENT.md');

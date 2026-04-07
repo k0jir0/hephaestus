@@ -1,5 +1,5 @@
 /**
- * hephaestus File Watcher
+ * Hephaestus File Watcher
  * Monitors TASKS.md for new tasks
  */
 

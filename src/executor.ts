@@ -1,5 +1,5 @@
 /**
- * hephaestus AI Executor
+ * Hephaestus AI Executor
  * Handles communication with various AI backends
  */
 

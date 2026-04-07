@@ -1,8 +1,8 @@
-# hephaestus Architecture
+# Hephaestus Architecture
 
 ## Purpose
 
-hephaestus is intentionally small: it demonstrates an inspectable automation loop without claiming opaque end-to-end autonomy. The architecture is designed to keep workflow state visible in markdown while moving safety and validation earlier in the lifecycle.
+Hephaestus is intentionally small: it demonstrates an inspectable automation loop without claiming opaque end-to-end autonomy. The architecture is designed to keep workflow state visible in markdown while moving safety and validation earlier in the lifecycle.
 
 ## Current Runtime Shape
 

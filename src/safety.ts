@@ -1,5 +1,5 @@
 /**
- * hephaestus Safety System
+ * Hephaestus Safety System
  * Guardrails and circuit breakers for safe autonomous operation
  */
 
@@ -214,7 +214,7 @@ export class SafetySystem {
    */
   getStatusSummary(): string {
     return `
-=== hephaestus Safety Status ===
+=== Hephaestus Safety Status ===
 Session Started: ${this.state.sessionStart.toISOString()}
 Budget Window Started: ${this.dailyStartTime.toISOString()}
 Total Tasks Completed: ${this.state.totalTasksCompleted}

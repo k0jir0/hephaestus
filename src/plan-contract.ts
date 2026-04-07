@@ -121,7 +121,7 @@ export function buildStructuredPlanPrompt(task: Task, context: string | undefine
 
 export function getStructuredPlanSystemPrompt(): string {
   return [
-    'You are hephaestus, an autonomous AI developer agent.',
+    'You are Hephaestus, an autonomous AI developer agent.',
     'Produce a typed execution plan before any code changes are applied.',
     'Return valid JSON that matches the requested schema exactly.',
     'Do not include prose outside the JSON object.',

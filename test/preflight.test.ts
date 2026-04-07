@@ -9,7 +9,7 @@ import { evaluateTaskAdmission, runStartupPreflight } from '../src/preflight.js'
 const tempDirs: string[] = [];
 
 async function createTempProject(tasksContent: string): Promise<string> {
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'hephaestus-preflight-'));
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'Hephaestus-preflight-'));
   tempDirs.push(tempDir);
 
   await fs.writeFile(path.join(tempDir, 'TASKS.md'), tasksContent, 'utf-8');
@@ -49,7 +49,7 @@ afterEach(async () => {
 
 describe('runStartupPreflight', () => {
   it('fails when TASKS.md is missing required sections', async () => {
-    const baseDir = await createTempProject(`# hephaestus Task Queue
+    const baseDir = await createTempProject(`# Hephaestus Task Queue
 
 ## Queue
 
@@ -78,7 +78,7 @@ describe('runStartupPreflight', () => {
   });
 
   it('allows warnings for unavailable backends without failing startup', async () => {
-    const baseDir = await createTempProject(`# hephaestus Task Queue
+    const baseDir = await createTempProject(`# Hephaestus Task Queue
 
 ## Queue
 

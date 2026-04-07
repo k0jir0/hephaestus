@@ -13,7 +13,7 @@ import { TaskWatcher } from '../src/watcher.js';
 const tempDirs: string[] = [];
 
 async function createFixtureRepo(): Promise<{ rootDir: string; tasksFile: string; memoryFile: string }> {
-  const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), 'hephaestus-smoke-'));
+  const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), 'Hephaestus-smoke-'));
   tempDirs.push(rootDir);
 
   const tasksFile = path.join(rootDir, 'TASKS.md');
@@ -21,7 +21,7 @@ async function createFixtureRepo(): Promise<{ rootDir: string; tasksFile: string
 
   await fs.writeFile(
     tasksFile,
-    `# hephaestus Task Queue
+    `# Hephaestus Task Queue
 
 ## Queue
 
